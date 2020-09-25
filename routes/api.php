@@ -14,4 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('report/export', [ReportStolenController::class, 'export']);
 Route::apiResource('report', ReportStolenController::class);

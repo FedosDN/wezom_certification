@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Export\StolenCarsExport;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ReportIndexRequest;
 use App\Http\Requests\Api\ReportStolenRequest;
+use App\Http\Resources\StolenCarsCollection;
 use App\Jobs\ReportStolenJob;
-use App\Services\Vin\ParseVinInterface;
+use App\Repositories\StolenCarRepository;
 use Illuminate\Http\Request;
 
 class ReportStolenController extends Controller
@@ -13,11 +16,22 @@ class ReportStolenController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param ReportIndexRequest $request
+     * @param StolenCarRepository $stolenCars
+     * @return StolenCarsCollection
      */
-    public function index()
+    public function index(ReportIndexRequest $request, StolenCarRepository $stolenCars)
     {
-        //
+        $data = $stolenCars->paginate($request);
+
+        return new StolenCarsCollection($data);
+    }
+
+    public function export(ReportIndexRequest $request, StolenCarRepository $stolenCars)
+    {
+        $exportQuery = $stolenCars->export($request);
+
+        return (new StolenCarsExport($exportQuery))->download('stolen_cars.xlsx');
     }
 
     /**
