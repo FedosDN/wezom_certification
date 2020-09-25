@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class UpdateReportRequest extends ReportStolenRequest
 {
     /**
@@ -24,7 +22,7 @@ class UpdateReportRequest extends ReportStolenRequest
     public function rules()
     {
         return array_merge(parent::rules(), [
-            'vin' => 'required|string|max:32|unique:stolen_cars,vin'
+            'vin' => 'required|string|max:32|exists:stolen_cars,vin'
         ]);
     }
 }
