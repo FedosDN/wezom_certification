@@ -35,4 +35,9 @@ class ModelsRepository extends AbstractRepository
     public function delete()
     {
     }
+
+    public function getByName($name)
+    {
+        return Model::query()->where('name', $name)->first();
+    }
 }

@@ -34,4 +34,13 @@ class MakesRepository extends AbstractRepository
     public function delete()
     {
     }
+
+    /**
+     * @param $name
+     * @return Make|null
+     */
+    public function getByName($name)
+    {
+        return Make::query()->where('name', $name)->first();
+    }
 }

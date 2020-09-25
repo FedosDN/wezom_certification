@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Arr;
+
 abstract class AbstractRepository
 {
     protected array $data;

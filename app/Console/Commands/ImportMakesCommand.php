@@ -27,6 +27,6 @@ class ImportMakesCommand extends Command
     {
         $makes = resolve(ImportMakesInterface::class)->makesList();
 
-        dispatch(new ImportMakesJob($makes));
+        dispatch(new ImportMakesJob($makes))->onQueue('make_queue');
     }
 }

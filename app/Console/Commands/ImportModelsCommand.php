@@ -29,7 +29,7 @@ class ImportModelsCommand extends Command
 
         //generator used for makes
         foreach ($modelsByMake as $models) {
-            dispatch(new ImportModelsJob($models));
+            dispatch(new ImportModelsJob($models))->onQueue('model_queue');
         }
     }
 }
