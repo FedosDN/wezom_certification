@@ -31,8 +31,9 @@ return [
     ],
 
     'cars_api' => [
-        'makes_url' => env('VIM_API_MAKES_URL', 'https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json'),
-        'models_url' => env('VIM_API_MODELS_URL', 'https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformakeid/{MAKE_ID}?format=json')
+        'makes_url' => env('VIN_API_MAKES_URL', 'https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json'),
+        'models_url' => env('VIN_API_MODELS_URL', 'https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformakeid/{MAKE_ID}?format=json'),
+        'vin_url' => env('VIN_API_CODE_URL', 'https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/{VIN}?format=json')
     ],
 
 ];
