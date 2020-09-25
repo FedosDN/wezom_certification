@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\MakesListController;
 use App\Http\Controllers\Api\ReportStolenController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::get('makes/search', [MakesListController::class, 'search']);
 Route::get('report/export', [ReportStolenController::class, 'export']);
 Route::apiResource('report', ReportStolenController::class);

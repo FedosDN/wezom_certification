@@ -43,4 +43,12 @@ class MakesRepository extends AbstractRepository
     {
         return Make::query()->where('name', $name)->first();
     }
+
+    public function search($request)
+    {
+        return Make::query()
+            ->where('name', 'LIKE', '%'. $request->search .'%')
+            ->with('models')
+            ->paginate();
+    }
 }

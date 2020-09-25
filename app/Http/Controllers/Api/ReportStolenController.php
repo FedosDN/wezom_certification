@@ -6,9 +6,12 @@ use App\Export\StolenCarsExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ReportIndexRequest;
 use App\Http\Requests\Api\ReportStolenRequest;
+use App\Http\Requests\Api\UpdateReportRequest;
 use App\Http\Resources\StolenCarsCollection;
 use App\Jobs\ReportStolenJob;
+use App\Models\StolenCar;
 use App\Repositories\StolenCarRepository;
+use App\Services\Vin\ParseVinInterface;
 use Illuminate\Http\Request;
 
 class ReportStolenController extends Controller
@@ -48,13 +51,18 @@ class ReportStolenController extends Controller
      * Store a newly created resource in storage.
      *
      * @param ReportStolenRequest $request
+     * @param ParseVinInterface $parser
+     * @param StolenCarRepository $repository
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(ReportStolenRequest $request)
+    public function store(ReportStolenRequest $request, ParseVinInterface $parser, StolenCarRepository $repository)
     {
-        dispatch(new ReportStolenJob($request->validated()))->onQueue('report_stolen_queue');
+        $vinInfo = $parser->parse($request->validated()['vin']);
+        $report = array_merge($request->validated(), $vinInfo);
 
-        return response()->json(['message' => 'Your report is being processed']);
+        $repository->setData($report)->save();
+
+        return response()->json(['message' => 'Report Added!']);
     }
 
     /**
@@ -86,19 +94,24 @@ class ReportStolenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateReportRequest $request, $id)
     {
-        //
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        //
+        $report = StolenCar::query()->findOrFail($id);
+
+        $report->delete();
+
+        return response()->json(['message' => 'Report deleted!']);
     }
 }
