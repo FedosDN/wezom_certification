@@ -21,6 +21,16 @@ class StolenCarRepository extends AbstractRepository
         return StolenCar::query()->insertOrIgnore($this->data);
     }
 
+    public function paginate($request)
+    {
+        return $this->paginatedQuery($request)->paginate($request->per_page ?: 10);
+    }
+
+    public function export($request)
+    {
+        return $this->paginatedQuery($request);
+    }
+
     public function saveMany()
     {
         // TODO: Implement saveMany() method.
@@ -39,5 +49,24 @@ class StolenCarRepository extends AbstractRepository
     public function delete()
     {
         // TODO: Implement delete() method.
+    }
+
+    protected function paginatedQuery($request)
+    {
+        $stolenCarsQuery = StolenCar::query();
+
+        $stolenCarsQuery->when($request->order_by, function ($query) use ($request) {
+            $query->orderBy($request->order_by, $request->direction);
+        });
+
+        $stolenCarsQuery->when($request->search, function ($query) use ($request) {
+            $query->where('user_name', 'LIKE', '%'. $request->search .'%');
+            $query->orWhere('license_plate', 'LIKE', '%'. $request->search .'%');
+            $query->orWhere('make', 'LIKE', '%'. $request->search .'%');
+            $query->orWhere('model', 'LIKE', '%'. $request->search .'%');
+            $query->orWhere('vin', 'LIKE', '%'. $request->search .'%');
+        });
+
+        return $stolenCarsQuery;
     }
 }
