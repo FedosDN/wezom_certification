@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 abstract class AbstractRepository
 {
     protected array $data;
+    protected array $filters;
 
     protected int $chunkSize = 10;
 
