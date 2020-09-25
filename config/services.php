@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'cars_api' => [
+        'makes_url' => env('VIM_API_MAKES_URL', 'https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json'),
+        'models_url' => env('VIM_API_MODELS_URL', 'https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformakeid/{MAKE_ID}?format=json')
+    ],
+
 ];
